@@ -3,38 +3,38 @@ import mongoose from "mongoose";
 const practitionerSchema = mongoose.Schema(
   {
     firstName: {
-      type: string,
+      type: String,
       trim: true,
       required: true,
     },
     lastName: {
-      type: string,
+      type: String,
       trim: true,
       required: true,
     },
     registrationNumber: {
-      type: number,
+      type: Number,
       required: true,
       unique: true,
     },
     specialty: {
-      type: string,
+      type: String,
       required: true,
     },
     workAddress: {
-      type: string,
+      type: String,
       required: true,
     },
     workPhoneNumber: {
-      type: number,
+      type: Number,
       required: true,
     },
     emailAddress: {
-      type: string,
+      type: String,
       required: true,
     },
     password: {
-      type: string,
+      type: String,
       required: true,
     },
   },

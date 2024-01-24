@@ -3,25 +3,26 @@ import mongoose from "mongoose";
 const patientSchema = mongoose.Schema(
   {
     userId: {
-      type: string,
+      type: String,
       required: true,
+      unique: true,
     },
     email: {
-      type: string,
+      type: String,
       required: true,
       unique: true,
     },
     password: {
-      type: string,
+      type: String,
       required: true,
     },
     firstName: {
-      type: string,
+      type: String,
       required: true,
       trim: true,
     },
     lastName: {
-      type: string,
+      type: String,
       required: true,
     },
     dob: {
@@ -33,43 +34,43 @@ const patientSchema = mongoose.Schema(
       default: null,
     },
     location: {
-      type: string,
+      type: String,
       trim: true,
       default: null,
     },
     occupation: {
-      type: string,
+      type: String,
       trim: true,
       default: null,
     },
     gender: {
-      type: string,
+      type: String,
       enum: ["male", "female"],
       default: null,
     },
     maritalStatus: {
-      type: string,
+      type: String,
       enum: ["single", "married", "divorced"],
       default: null,
     },
     address: {
-      type: string,
+      type: String,
       default: null,
     },
     phoneNumber: {
-      type: number,
+      type: Number,
       default: null,
     },
     nextOfKin: {
-      type: string,
+      type: String,
       default: null,
     },
     relationshipWithNextOfKin: {
-      type: string,
+      type: String,
       default: null,
     },
     contactOfNextOfKin: {
-      type: number,
+      type: String,
       default: null,
     },
   },

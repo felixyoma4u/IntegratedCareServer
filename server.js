@@ -1,10 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
+import connectDatabase from "./config/MongoDb.js";
 import { errorHandler, notFound } from "./Middleware /Errors.js";
 import cors from "cors";
 import patientRouter from "./Routes/patientRoutes.js";
 
 dotenv.config();
+connectDatabase();
 
 const app = express();
 app.use(cors("*"));
