@@ -1,17 +1,13 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
-import Patient from "../Models/PatientModel.js";
+import Encounter from "../Models/EncounterModel.js";
+import Procedure from "../Models/ProcedureModel.js";
 
 const patientRouter = express.Router();
 
-patientRouter.post(
+patientRouter.get(
   "/",
   asyncHandler(async (req, res) => {
-    await Patient.create({
-      firstName: "Ty",
-      userId: "2",
-      email: "ty2@ty.com",
-    });
     res.json({
       message: "Hello patient",
     });
