@@ -2,6 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import Patient from "../Models/PatientModel.js";
 import ID from "nodejs-unique-numeric-id-generator";
+import generateToken from "../Authentication/auth.js";
 
 const patientRouter = express.Router();
 
@@ -37,11 +38,33 @@ patientRouter.post(
         firstName: patient.firstName,
         lastName: patient.lastName,
         email: patient.email,
-        // token: JWT TOKEN
+        token: generateToken(patient._id),
       });
     } else {
       res.status(400);
       throw new Error("Invalid Patient Data");
+    }
+  })
+);
+
+//PATIENTS LOGIN
+patientRouter.post(
+  "/login",
+  asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    const patient = await Patient.findOne({ email });
+
+    if (patient && (await patient.matchPassword(password))) {
+      res.json({
+        patientId: patient.patientId,
+        firstName: patient.firstName,
+        lastName: patient.lastName,
+        email: patient.email,
+        token: generateToken(patient._id),
+      });
+    } else {
+      res.status(401);
+      throw new Error("Invalid Email or Password");
     }
   })
 );

@@ -4,7 +4,6 @@ import connectDatabase from "./config/MongoDb.js";
 import { errorHandler, notFound } from "./Middleware /Errors.js";
 import cors from "cors";
 import patientRouter from "./Routes/patientRoutes.js";
-import authRoute from "./Routes/auth.js"
 
 dotenv.config();
 connectDatabase();
@@ -14,7 +13,6 @@ app.use(cors("*"));
 app.use(express.json());
 
 //API
-app.use('/', authRoute);
 app.use("/api/patient", patientRouter);
 
 //ERROR HANDLER
