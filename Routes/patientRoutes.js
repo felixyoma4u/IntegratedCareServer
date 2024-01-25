@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import Patient from "../Models/PatientModel.js";
 import ID from "nodejs-unique-numeric-id-generator";
 import generateToken from "../Authentication/auth.js";
+import { protect } from "../Middleware /AuthMiddleware.js";
 
 const patientRouter = express.Router();
 
@@ -69,11 +70,14 @@ patientRouter.post(
   })
 );
 
+//Example of a protected route
 patientRouter.get(
   "/",
+  protect,
   asyncHandler(async (req, res) => {
     res.json({
       message: "Hello patient",
+      patient: req.patient,
     });
   })
 );
