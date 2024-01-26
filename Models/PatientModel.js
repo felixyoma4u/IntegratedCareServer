@@ -89,7 +89,7 @@ patientSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-//LOGIN
+//PATIENT LOGIN
 patientSchema.methods.matchPassword = async function (enterPassword) {
   return await bcrypt.compare(enterPassword, this.password);
 };

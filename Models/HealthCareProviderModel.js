@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 const practitionerSchema = mongoose.Schema(
   {
@@ -29,7 +30,7 @@ const practitionerSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    emailAddress: {
+    email: {
       type: String,
       required: true,
     },
@@ -42,6 +43,20 @@ const practitionerSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+//PRACTITIONER REGISTER
+practitionerSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+// PRACTITIONER LOGIN
+practitionerSchema.methods.matchPassword = async function (enterPassword) {
+  return await bcrypt.compare(enterPassword, this.password);
+};
 
 const Practitioner = mongoose.model("Practitioner", practitionerSchema);
 
