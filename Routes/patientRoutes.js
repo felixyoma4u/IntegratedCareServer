@@ -70,15 +70,30 @@ patientRouter.post(
   })
 );
 
-//Example of a protected route
+//GET PATIENT BY PATIENT ID
 patientRouter.get(
   "/",
   protect,
   asyncHandler(async (req, res) => {
-    res.json({
-      message: "Hello patient",
-      patient: req.patient,
-    });
+    const patientId = req.query.patientId.trim();
+    if (!patientId) {
+      res.status(400);
+      throw new Error("Provide a valid patient id");
+    }
+
+    const patient = await Patient.findOne({ patientId });
+
+    if (patient) {
+      res.json({
+        patientId: patient.patientId,
+        firstName: patient.firstName,
+        lastName: patient.lastName,
+        email: patient.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Patient does not exist");
+    }
   })
 );
 
