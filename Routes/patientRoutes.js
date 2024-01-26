@@ -75,7 +75,7 @@ patientRouter.get(
   "/",
   protect,
   asyncHandler(async (req, res) => {
-    const patientId = req.query.patientId.trim();
+    const patientId = req.query.patientId;
     if (!patientId) {
       res.status(400);
       throw new Error("Provide a valid patient id");

@@ -2,6 +2,7 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import Practitioner from "../Models/HealthCareProviderModel.js";
 import generateToken from "../Authentication/auth.js";
+import { protect } from "../Middleware /AuthMiddleware.js";
 
 const practitionerRouter = express.Router();
 
@@ -82,6 +83,40 @@ practitionerRouter.post(
     } else {
       res.status(401);
       throw new Error("Invalid Email or Password");
+    }
+  })
+);
+
+practitionerRouter.get(
+  "/",
+  protect,
+  asyncHandler(async (req, res) => {
+    const email = req.query.email;
+    if (!email) {
+      res.status(400);
+      throw new Error("Provide a valid email");
+    }
+
+    if (!email.includes("@")) {
+      res.status(400);
+      throw new Error("Provide a valid email");
+    }
+
+    const practitioner = await Practitioner.findOne({ email });
+
+    if (practitioner) {
+      res.json({
+        firstName: practitioner.firstName,
+        lastName: practitioner.lastName,
+        registrationNumber: practitioner.registrationNumber,
+        specialty: practitioner.specialty,
+        workAddress: practitioner.workAddress,
+        workPhoneNumber: practitioner.workPhoneNumber,
+        email: practitioner.email,
+      });
+    } else {
+      res.status(400);
+      throw new Error("Practitioner does not exist");
     }
   })
 );
