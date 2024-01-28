@@ -42,6 +42,7 @@ patientRouter.post(
         lastName: patient.lastName,
         email: patient.email,
       });
+      //TODO:Correct the url on deployment
       const confirmationUrl = "localhost:3000/api/patient/confirmation";
       mailer(patient, confirmationUrl);
     } else {
@@ -109,6 +110,7 @@ patientRouter.get(
   })
 );
 
+//EMAIL CONFIRMATION
 patientRouter.get(
   "/confirmation/:token",
   asyncHandler(async (req, res) => {

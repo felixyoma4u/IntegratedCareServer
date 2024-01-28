@@ -56,6 +56,7 @@ practitionerRouter.post(
         workPhoneNumber: practitioner.workPhoneNumber,
         email: practitioner.email,
       });
+      //TODO: Correct the url on deployment
       const confirmationUrl = "localhost:3000/api/practitioner/confirmation";
       mailer(practitioner, confirmationUrl);
     } else {
