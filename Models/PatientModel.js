@@ -74,6 +74,10 @@ const patientSchema = mongoose.Schema(
       type: String,
       default: null,
     },
+    confirmed: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -2,8 +2,10 @@ import express from "express";
 import asyncHandler from "express-async-handler";
 import Patient from "../Models/PatientModel.js";
 import ID from "nodejs-unique-numeric-id-generator";
-import generateToken from "../Authentication/auth.js";
+import generateToken from "../utils/generateToken.js";
 import { protect } from "../Middleware /AuthMiddleware.js";
+import mailer from "../config/EmailService.js";
+import jwt from "jsonwebtoken";
 
 const patientRouter = express.Router();
 
@@ -39,8 +41,9 @@ patientRouter.post(
         firstName: patient.firstName,
         lastName: patient.lastName,
         email: patient.email,
-        token: generateToken(patient._id),
       });
+      const confirmationUrl = "localhost:3000/api/patient/confirmation";
+      mailer(patient, confirmationUrl);
     } else {
       res.status(400);
       throw new Error("Invalid Patient Data");
@@ -54,6 +57,15 @@ patientRouter.post(
   asyncHandler(async (req, res) => {
     const { email, password } = req.body;
     const patient = await Patient.findOne({ email });
+
+    if (!patient) {
+      res.status(401);
+      throw new Error("Invalid Email or Password");
+    }
+
+    if (!patient.confirmed) {
+      throw new Error("Please confirm your email to login");
+    }
 
     if (patient && (await patient.matchPassword(password))) {
       res.json({
@@ -93,6 +105,22 @@ patientRouter.get(
     } else {
       res.status(400);
       throw new Error("Patient does not exist");
+    }
+  })
+);
+
+patientRouter.get(
+  "/confirmation/:token",
+  asyncHandler(async (req, res) => {
+    const { id } = jwt.verify(req.params.token, process.env.JWT_SECRET);
+    const patient = await Patient.findById(id);
+    if (patient) {
+      patient.confirmed = true;
+      const confirmedPatient = await patient.save();
+      res.json(confirmedPatient);
+    } else {
+      res.status(404);
+      throw new Error("Patient not found");
     }
   })
 );
