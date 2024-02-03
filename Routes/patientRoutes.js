@@ -22,10 +22,10 @@ patientRouter.post(
 
     const patientExists = await Patient.findOne({ email });
 
-    if (patientExists) {
-      res.status(400);
-      throw new Error("Patient already exists");
-    }
+    // if (patientExists) {
+    //   res.status(400);
+    //   throw new Error("Patient already exists");
+    // }
 
     const patient = await Patient.create({
       firstName,

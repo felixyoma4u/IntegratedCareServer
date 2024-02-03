@@ -4,6 +4,7 @@ import Patient from "../Models/PatientModel.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
+  
 
   if (
     req.headers.authorization &&
